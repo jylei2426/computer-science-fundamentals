@@ -1,0 +1,77 @@
+Trees and Graphs
+
+1. What is a binary tree and what makes it unique to other trees?
+A Binary Tree is a data structure in which each Node may point to a left child 
+and a right child.
+
+2. What is a heuristic?
+ guesses that an algorithm makes to solve a problem sooner by sacrificing accuracy. 
+
+3.What is another problem besides the shortest-path problem that requires the use of heuristics?
+An example can be the E-coli outbreak from lettuce. We can use educated guesses to avoid lettuce or wash lettuce before consuming.
+
+4. What is the difference between a depth-first search and a breadth-first search?
+Depth-first search (DFS) starts at the root and explore as far as possible along each branch before backtracking.Breadth-first search (BFS) starts at the tree root and explore the neighbor nodes first, before moving to the next level neighbors.
+
+5.Explain in your own words what an undirected, a-cyclic, unweighted graph is.
+An undirected, a-cyclic, unweighted graph would be a graph that each node is connected to each other like a two way street, does not form any loops, and has no weighted branches (cost).
+
+6. What kind of graph is a binary search tree?
+A binary tree is an undirected, a-cyclic graph. Binary trees can be weighted or unweighted, depending on the data.
+
+Programming Questions
+
+1.Given a Binary Search Tree and a value, write a function that checks to see whether the value exists within the tree.
+>Example: The value 10 exists in the tree. The value 23 does not exist in the tree.
+-Starting at root, check left and right branches to see if value exists, return true if so, false if not.
+
+function checkValueTree(value){
+  let current = this.root;
+  while (current){
+    if (value === current.value){
+      return true;
+    }
+    else if (value < current.value){
+      current = current.left;
+    }
+    else {
+      current = current.right;
+    }
+   }
+   return false;
+ }
+checkValueTree();
+
+2. Given a Binary Search Tree and two nodes, n1 and n2, write a function that finds the distance between the two nodes.
+
+Example: The distance between the nodes 4 and 10 is 4. The distance between the nodes 8 and 10 is 1. The distance between the nodes 1 and 14 is 4.
+
+- add the distance between n1 and the root, plus the distance between n2 and the root to find the shortest path between n1 and n2.
+
+function findDistance(root, n1, n2){
+  if (root === null || n1 === n2){
+    return 0;
+  }
+  distance.left = findDistance(root.left, n1, n2);
+  distance.right = findDistance(root.right, n1, n2);
+
+  if (distance.left > 0 && distance.right > 0){
+    return distance.left + distance.right;
+  }
+  if (distance.left > 0 && distance.right > 0){
+    return distance.left;
+  }
+  if (distance.right > 0 && root === n1 || n2){
+    return distance.right;
+  }
+  if (distance.left === 0 && distance.right === 0){
+    if(root !== n1 || n2){
+      return 0;
+    }
+    if (root == n1 || n2){
+      return 1;
+    }
+    } else {
+      return max(distance.left, distance.right) + 1;
+    }
+}
