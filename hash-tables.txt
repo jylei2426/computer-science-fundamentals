@@ -27,51 +27,208 @@ object
 
 6.Build a system that allows a sales associate to enter a customer's name, address, and phone number into the system and look up customers using their phone numbers. Store this information in a hash table.
 
-function createCustomerInfo (name, address, phoneNumber){
-	CREATE HashMapName 
-	CREATE HashMapAddress 
-	CREATE HashMapPhoneNumber
-	STORE phoneNumber (key) with name and address (values)
+var hash = (string, max) => {
+  var hash = 0;
+  for (var i =0; i <= string.length; i++){
+    hash += string.charAt(i);
 }
+return hash % max;
+};
 
-function lookupCustomer(phoneNumber){
-	IF customer does NOT have phoneNumber
-           PRINT ’New customer needs to be created’
-	ELSE IF customer has phoneNumber
-	   RETURN customer information
-        ELSE customer phoneNumber doesn’t match
-	   PRINT ‘Customer doesn’t exist’
-        END IF
-}
+let HashTable = function() {
+  let storage = [];
+  const storageLimit = 100;
+
+  this.print = function() {
+    console.log(storage);
+  };
+
+  this.add = function(phone, name, customerAddress){
+    var index = hash(phone, storageLimit);
+    if (storage[index] === undefined) {
+      storage[index] = [ [phone, name, customerAddress]
+      ];
+    } else {
+      var input = false;
+      for (var i =0; i < storage[index].length; i++) {
+        if (storage[index][i][0] === phone) {
+          storage[index][i][1] = customerAddress;
+          input = true;
+      }
+    }
+    if (input === false){
+      storage[index].push([phone, name, customerAddress]);
+    }
+  }
+};
+
+this.remove = function(phone) {
+  var index = hash(phone, storageLimit);
+  if (storage[index].length === 1 && storage[index][0][0] === phone) {
+    delete storage[index];
+  } else {
+    for (var i = 0; i < storage[index].length; i++){
+      if (storage[index][i][0] === phone) {
+        delete storage[index][i];
+      }
+    }
+  }
+};
+
+this.lookup = function(phone) {
+  var index = hash(phone, storageLimit);
+  if (storage[index] === undefined){
+    return undefined;
+  } else {
+    for (var i =0; i < storage[index].length; i++){
+      if (storage[index][i][0] === phone) {
+        return storage[index][i][1];
+      }
+    }
+  }
+};
+};
+
+var customers = new HashTable();
+customers.add("555-444-3333”, “Jenny”, “122 Happy Street”);
+customers.lookup(“222-222-2222”);
 
 7.Build a system that allows a store owner to track their store's inventory using a hash table for storage.
 
-function createStoreInventory(itemName, itemNumber, inStock){
-	CREATE HashMapInventory
-	STORE itemNumber (key) in HashMapInventory with itemName and inStock status(values)
-}
 
-function trackInventory(itemNumber){
-	IF itemNumber is in HashMapInventory 
-	   RETURN itemName and inStock status
-	ELSE 
-	   PRINT ’The itemName doesn’t exist’
-        END IF
-}
+var hash = function (string, max) {
+  var hash = 0;
+  for (var i = 0; i <string.length; i++){
+    hash += string.charCodeAt(i);
+  }
+  return hash % max;
+};
+
+var HashTable = function(){
+  var storage = [];
+  var storageLimit = 90;
+  
+  this.add = function(key, value){
+    var index = hash(key, storageLimit);
+    
+    if (storage[index] === undefined) {
+      storage[index] = [
+        [key, value]
+      ];
+    } else {
+      var input = false;
+      
+      for(var i = 0; i < storage[index].length; i++) {
+        if(storage[index][i][0] === key) {
+          storage[index][i][1] = value;
+          input = true;
+        }
+      }
+      
+      if (input === false){
+        storage[index].push([key, value]);
+      }
+    }
+  };
+  
+  this.findItem = function(key) {
+    var index = hash(key, storageLimit);
+    
+    if(storage[index] === undefined) {
+      console.log("Item Not Found");
+    } else {
+      for (var i = 0; i < storage[index].length; i ++) {
+        if (storage[index][i][0] === key) {
+          console.log( storage[index][i][0] + " : " + storage[index][i][1]);
+        }
+      }
+    }
+  };
+  
+  this.showInventory = function(){
+    console.log(storage);
+  };
+  
+};
+
+var storeInventory = new HashTable();
+
 
 8.Build a system that allows digital copies of newspapers to be entered and searched by publisher and publication date. Use hash tables to store the necessary data.
 
-function createDigitalNewspaper(publisher, publicationDate){
-	CREATE HashMapNewspaper with publisher and publicationDate for each digital copy
-	STORE publicationDate (key) with publisher (value) per copy in HashMapNewspaper
-}
 
-function findNewspaper(publicationDate){
-	IF  publicationDate is in HashMapNewspaper
-	   RETURN publicationDate and publisher
-	ELSE
-	   PRINT ‘publicationDate is not available’
-	END IF
-}
+var hash = (string, max) => {
+  var hash = 0;
+  for (var i = 0; i < string.length; i++){
+    hash += string.charCodeAt(i);
+  }
+  return hash % max;
+};
+
+let HashTable = function(){
+  let storage = [];
+  const storageLimit = 30;
 
 
+  this.add = function(key, value){
+    var index = hash(key, storageLimit);
+    if (storage[index] === undefined){
+      storage[index] = [
+        [key, value]
+        ];
+    } else {
+      var input = false;
+      for (var i = 0; i < storage[index].length; i++){
+        if (storage[index][i][0] === key){
+          storage[index][i][1] = value;
+          input = true;
+        }
+      }
+      if (input === false) {
+        storage[index].push([key, value]);
+      }
+    }
+  };
+
+
+  this.lookup = function (key) {
+    var index = hash(key, storageLimit);
+    if (storage[index] === undefined){
+      return undefined;
+    } else {
+      for (var i = 0; i < storage[index].length; i++){
+        if (storage[index][i][0] === key){
+          return storage[index][i][1];
+        }
+      }
+    }
+
+    };
+
+
+    this.lookupDate = function(value) {
+      var index = hash(value, storageLimit);
+      if(storage[index] === undefined){
+        return undefined;
+      } else {
+        for (var i = 0; i < storage[index].length; i++){
+          if (storage[index][i][1] === value) {
+            return storage[index][i][2];
+          }
+        }
+      }
+    };
+};
+
+var digitalCopies = [{
+  publisher: "",
+  publicationDate: "",
+  article: ""
+}];
+
+var articleTable = new HashTable();
+articleTable.add(“Times-June-2018", "2018");
+articleTable.lookup(“Times-June-2018");
+articleTable.lookupDate("2018");
+
+console.log(articleTable.lookup(“Times-June-2018"));
